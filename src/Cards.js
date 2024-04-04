@@ -43,6 +43,7 @@ function Cards() {
     const shuffleUrl = `${BASE_URL}/${deckId}/shuffle`;
 
     const res = await axios.get(shuffleUrl);
+    setImageUrl('')
      };
 
 
