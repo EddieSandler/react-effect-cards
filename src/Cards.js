@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import './Cards.css'
+
 
 const BASE_URL = 'https://deckofcardsapi.com/api/deck';
 
 function Cards() {
   // State to store the deckId
   const [deckId, setDeckId] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
 
   // Fetch the deck ID when the component mounts
   useEffect(() => {
@@ -23,33 +26,36 @@ function Cards() {
         const drawCardUrl = `${BASE_URL}/${deckId}/draw/?count=1`;
         // Assuming you want to do something with the response
         const res = await axios.get(drawCardUrl);
-        console.log(res.data.deck_id);
-        console.log(`${res.data.cards[0].value} of  ${res.data.cards[0].suit}`); // Log or set state with the drawn card data
-        let img = res.data.cards[0].image;
-        console.log(img);
+
+        setImageUrl(res.data.cards[0].image);
+
       }
-      catch {
-        console.log('Game Over');
+      catch (error) {
+        console.error('error drawing card ', error);
+        alert("Error: no cards remaining!");
       }
     };
   };
 
   const shuffleDeck = async () => {
-    //remove all cards from screen
-    //call api to shuffle deck with existing deckId
+
 
     const shuffleUrl = `${BASE_URL}/${deckId}/shuffle`;
-    // Assuming you want to do something with the response
+
     const res = await axios.get(shuffleUrl);
-    console.log(res.data.deck_id); // Log or set state with the drawn card data
-  };
-  //button can't be clickable during shuffle
+     };
+
 
 
   return (
     <div>
-      <div>Draw Cards</div>
-      {/* Ensure drawCard is called without passing event arguments */}
+      <div>
+        <h1>Draw Cards</h1>
+        </div>
+
+      <div>
+        {imageUrl && <img src={imageUrl} alt="Card" />}
+      </div>
       <button onClick={drawCard}>Draw Card</button>
       <button onClick={shuffleDeck}>Shuffle Deck</button>
     </div>
