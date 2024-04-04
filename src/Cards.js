@@ -6,7 +6,7 @@ import './Cards.css'
 const BASE_URL = 'https://deckofcardsapi.com/api/deck';
 
 function Cards() {
-  // State to store the deckId
+  // State to store the deckId and image URL
   const [deckId, setDeckId] = useState('');
   const [imageUrl, setImageUrl] = useState('');
 
@@ -19,12 +19,12 @@ function Cards() {
     fetchDeckId();
   }, []);
 
-  // Function to draw a card using the deckId
+  // Function to draw a card and get image url
   const drawCard = async () => {
     if (deckId) {
       try {
         const drawCardUrl = `${BASE_URL}/${deckId}/draw/?count=1`;
-        // Assuming you want to do something with the response
+
         const res = await axios.get(drawCardUrl);
 
         setImageUrl(res.data.cards[0].image);
@@ -37,9 +37,8 @@ function Cards() {
     };
   };
 
+  //function to shuffle existing deck and remove cards from screen
   const shuffleDeck = async () => {
-
-
     const shuffleUrl = `${BASE_URL}/${deckId}/shuffle`;
 
     const res = await axios.get(shuffleUrl);
@@ -48,6 +47,7 @@ function Cards() {
 
 
 
+     //render card image and buttons to draw and shufffle cards
   return (
     <div>
       <div>
